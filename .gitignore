@@ -1,0 +1,11 @@
+.idea/
+*.DS_Store
+*.pyc
+*.log
+*.mwb.bak
+.env
+/tmp/*
+!/tmp/.gitkeep
+/node_modules
+/media/*
+!/media/.gitkeep
