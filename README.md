@@ -33,5 +33,12 @@ Minimum system requirements:
 - PostgreSQL 10 + PostGIS
 - NodeJS & Yarn (only for API blueprint docs)
 
+## Libraries
+
+- [Django](https://www.djangoproject.com/): Back-end framework
+- [python-dotenv](https://github.com/theskumar/python-dotenv): Configuration using .env files
+- [django-enumfield](https://github.com/5monkeys/django-enumfield): Enum support for Django ORM
+- 
+
 ---
 With ❤️ Hobbits (c) 2019

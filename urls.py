@@ -23,7 +23,7 @@ from api import urls as api_urls
 
 
 urlpatterns = []
-urlpatterns += api_urls
+urlpatterns += api_urls.urlpatterns
 
 if os.getenv('DJANGO_SETTINGS_MODULE') == 'settings.development':
     urlpatterns += static(settings.STATIC_URL)
