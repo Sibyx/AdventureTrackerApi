@@ -9,7 +9,7 @@ def token_required(func):
     @wraps(func)
     def inner(request, *args, **kwargs):
         if not request.user or not request.user.is_authenticated:
-            raise ApiException(_("You have to log in!"), status_code=http_status.HTTP_401_UNAUTHORIZED)
+            raise ApiException(_("Invalid or missing credentials"), status_code=http_status.HTTP_401_UNAUTHORIZED)
         return func(request, *args, **kwargs)
 
     return inner
