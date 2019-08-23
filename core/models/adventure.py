@@ -1,21 +1,16 @@
+import enum
+
 from django.contrib.gis.db import models
-from django_enumfield import enum
+from django_enum_choices.fields import EnumChoiceField
 
 from core.models.base import BaseModel
 
 
 class AdventureType(enum.Enum):
-    DRAFT = 0
-    PLANNED = 1
-    IN_PROGRESS = 2
-    FINISHED = 3
-
-    labels = {
-        DRAFT: 'DRAFT',
-        PLANNED: 'PLANNED',
-        IN_PROGRESS: 'IN_PROGRESS',
-        FINISHED: 'FINISHED'
-    }
+    DRAFT = 'DRAFT'
+    PLANNED = 'PLANNED'
+    IN_PROGRESS = 'IN_PROGRESS'
+    FINISHED = 'FINISHED'
 
 
 class Adventure(BaseModel):
@@ -24,8 +19,7 @@ class Adventure(BaseModel):
         default_permissions = ()
         db_table = 'adventures'
 
-    status = enum.EnumField(AdventureType)
-    code = models.UUIDField(unique=True)
+    status = EnumChoiceField(AdventureType)
     happened_at = models.DateTimeField()
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)

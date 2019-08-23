@@ -9,5 +9,5 @@ class RecordType(BaseModel):
         default_permissions = ()
         db_table = 'record_types'
 
-    code = models.UUIDField(unique=True)
+    title = models.CharField(max_length=50, unique=True)
     description = models.TextField(null=True, blank=True)

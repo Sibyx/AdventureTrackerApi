@@ -36,10 +36,10 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'api.middleware.json.JsonMiddleware',
+    'api.middleware.token.TokenMiddleware',
+    'api.middleware.exception.ExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'urls'
@@ -96,6 +96,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = 'core.User'
+
+AUTHENTICATION_BACKENDS = [
+    'api.auth.backend.TokenBackend'
+]
+
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

@@ -15,7 +15,6 @@ class Record(BaseModel):
     adventure = models.ForeignKey(Adventure, on_delete=models.CASCADE, related_name='records')
     record_type = models.ForeignKey(RecordType, on_delete=models.CASCADE, related_name='records')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='records')
-    code = models.UUIDField(unique=True)
     happened_at = models.DateTimeField()
     description = models.TextField()
     location = models.PointField(null=True, blank=True)

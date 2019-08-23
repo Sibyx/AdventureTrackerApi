@@ -10,8 +10,9 @@ django = "==2.2.*"
 python-dotenv = "*"
 sentry-sdk = "*"
 psycopg2-binary = "*"
-django-enumfield = "*"
+django-enum-choices = "*"
 pillow = "*"
+argon2-cffi = "*"
 
 [requires]
 python_version = "3.7"

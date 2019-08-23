@@ -2,6 +2,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.gis.db import models
 
+from core.managers.user import UserManager
 from core.models.adventure import Adventure
 from core.models.base import BaseModel
 
@@ -16,6 +17,9 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=50, null=True, blank=True)
     surname = models.CharField(max_length=50, null=True, blank=True)
     adventures = models.ManyToManyField(Adventure, related_name='users')
+
+    objects = UserManager()
+    objects_all = UserManager(alive_only=False)
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
