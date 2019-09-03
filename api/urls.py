@@ -1,10 +1,13 @@
 from django.urls import path
 
-from api.views import token, auth
+from api.views import token, auth, record_type
 
 urlpatterns = [
     # Tokens
     path('tokens', token.TokenManagement.as_view()),
+
+    # Record types
+    path('record_types', record_type.RecordTypeManagement.as_view()),
 
     # Auth
     path('auth/validate', auth.validate, name='auth-create'),

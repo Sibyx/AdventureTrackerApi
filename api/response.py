@@ -2,8 +2,11 @@ import datetime
 import decimal
 import json
 
+from django.core.paginator import Paginator
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
+
+from django.contrib.gis.db.models import QuerySet
 
 
 class MessagePackEncoder(object):
@@ -26,11 +29,35 @@ class MessagePackEncoder(object):
 
 class SingleResponse(HttpResponse):
     def __init__(self, data, **kwargs):
+        # TODO: check if content is none in kwargs
         data = {
             'response': data,
             'metadata': []
         }
         kwargs.setdefault('content_type', 'application/json')
+        data = json.dumps(data, cls=DjangoJSONEncoder)
+
+        super().__init__(content=data, **kwargs)
+
+
+class PaginationResponse(HttpResponse):
+    def __init__(self, qs: QuerySet, page: int, limit: int, **kwargs):
+        # TODO: check if content is none in kwargs
+        kwargs.setdefault('content_type', 'application/json')
+        paginator = Paginator(qs, limit)
+
+        # Dict serialization using summary
+        items = [item.summary for item in paginator.get_page(page)]
+
+        data = {
+            'items': items,
+            'metadata': {
+                'page': int(page),
+                'limit': paginator.per_page,
+                'pages': paginator.num_pages,
+                'total': paginator.count
+            }
+        }
         data = json.dumps(data, cls=DjangoJSONEncoder)
 
         super().__init__(content=data, **kwargs)
