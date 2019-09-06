@@ -25,6 +25,6 @@ class RecordType(BaseModel):
             'title': self.localizations[language_code]['title'],
             'description': self.localizations[language_code]['description'],
             'examples': self.localizations[language_code]['examples'],
-            'create_at': self.created_at.isoformat(),
+            'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat()
         }

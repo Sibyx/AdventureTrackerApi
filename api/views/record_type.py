@@ -1,8 +1,10 @@
 from django.conf import settings
+from django.http import HttpRequest, QueryDict
+from django.utils.datastructures import MultiValueDict
 from django.utils.translation import get_language
 from django.views.generic.base import View
 
-from api.response import PaginationResponse
+from api.response import PaginationResponse, Ordering
 from core.models import RecordType
 
 
@@ -26,6 +28,6 @@ class RecordTypeManagement(View):
 
         qs = RecordType.objects.filter(**parameters)
 
-        return PaginationResponse(qs, page, limit)
+        return PaginationResponse(qs, page, limit, ordering=Ordering.create_from_request(request))
 
 

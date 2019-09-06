@@ -1,10 +1,12 @@
 import datetime
 import decimal
 import json
+from dataclasses import dataclass
+from enum import Enum
 
 from django.core.paginator import Paginator
 from django.core.serializers.json import DjangoJSONEncoder
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 
 from django.contrib.gis.db.models import QuerySet
 
@@ -14,6 +16,7 @@ class MessagePackEncoder(object):
     TODO: MessagePack according  accept-type
     https://github.com/juanriaza/django-rest-framework-msgpack/blob/master/rest_framework_msgpack/renderers.py
     """
+
     def encode(self, obj):
         if isinstance(obj, datetime.datetime):
             return {'__class__': 'datetime', 'as_str': obj.isoformat()}
@@ -27,9 +30,29 @@ class MessagePackEncoder(object):
             return obj
 
 
+@dataclass
+class Ordering:
+    class Order(Enum):
+        ASC = 'asc'
+        DESC = 'desc'
+
+    column: str
+    order: Order = Order.ASC
+
+    @staticmethod
+    def create_from_request(request) -> 'Ordering':
+        result = Ordering(request.GET.get('order_by', 'created_at'), Ordering.Order(request.GET.get('order', 'ASC')))
+        return result
+
+    def __str__(self):
+        return self.column if self.order == self.Order.ASC else f"-{self.column}"
+
+    def __repr__(self):
+        return self.__str__()
+
+
 class SingleResponse(HttpResponse):
     def __init__(self, data, **kwargs):
-        # TODO: check if content is none in kwargs
         data = {
             'response': data,
             'metadata': []
@@ -41,9 +64,12 @@ class SingleResponse(HttpResponse):
 
 
 class PaginationResponse(HttpResponse):
-    def __init__(self, qs: QuerySet, page: int, limit: int, **kwargs):
-        # TODO: check if content is none in kwargs
+    def __init__(self, qs: QuerySet, page: int, limit: int, ordering: Ordering = None, **kwargs):
         kwargs.setdefault('content_type', 'application/json')
+
+        # Ordering
+        ordering = ordering if ordering else Ordering('created_at')
+        qs = qs.order_by(str(ordering))
         paginator = Paginator(qs, limit)
 
         # Dict serialization using summary
