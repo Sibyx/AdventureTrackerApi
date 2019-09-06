@@ -40,8 +40,16 @@ class Ordering:
     order: Order = Order.ASC
 
     @staticmethod
-    def create_from_request(request) -> 'Ordering':
-        result = Ordering(request.GET.get('order_by', 'created_at'), Ordering.Order(request.GET.get('order', 'ASC')))
+    def create_from_request(request, aliases: dict = None) -> 'Ordering':
+        column = request.GET.get('order_by', 'created_at')
+        aliases = aliases or {}
+
+        for key, value in aliases.items():
+            if column == key:
+                column = value
+                break
+
+        result = Ordering(column, Ordering.Order(request.GET.get('order', 'asc')))
         return result
 
     def __str__(self):

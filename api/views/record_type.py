@@ -1,6 +1,4 @@
 from django.conf import settings
-from django.http import HttpRequest, QueryDict
-from django.utils.datastructures import MultiValueDict
 from django.utils.translation import get_language
 from django.views.generic.base import View
 
@@ -26,8 +24,13 @@ class RecordTypeManagement(View):
         # Remove None values from parameters
         parameters = {k: v for k, v in parameters.items() if v is not None}
 
+        aliases = {
+            'title': f'localizations__{language_code}__title'
+        }
+        ordering = Ordering.create_from_request(request, aliases)
+
         qs = RecordType.objects.filter(**parameters)
 
-        return PaginationResponse(qs, page, limit, ordering=Ordering.create_from_request(request))
+        return PaginationResponse(qs, page, limit, ordering=ordering)
 
 
