@@ -6,11 +6,11 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "docs:watch": "node_modules/.bin/snowboard html --watch -o _docs/index.html _docs/specification.apib ; node_modules/.bin/open-cli _docs/index.html",
-    "docs:lint": "node_modules/.bin/snowboard lint _docs/specification.apib",
-    "docs:open": "node_modules/.bin/snowboard html -o _docs/index.html _docs/specification.apib ; node_modules/.bin/open-cli _docs/index.html",
-    "docs:build": "node_modules/.bin/snowboard html -o _docs/index.html _docs/specification.apib",
-    "docs:mock": "node_modules/.bin/snowboard mock _docs/specification.apib"
+    "docs:watch": "node_modules/.bin/snowboard html --watch -o docs/index.html docs/specification.apib ; node_modules/.bin/open-cli docs/index.html",
+    "docs:lint": "node_modules/.bin/snowboard lint docs/specification.apib",
+    "docs:open": "node_modules/.bin/snowboard html -o docs/index.html docs/specification.apib ; node_modules/.bin/open-cli docs/index.html",
+    "docs:build": "node_modules/.bin/snowboard html -o docs/index.html docs/specification.apib",
+    "docs:mock": "node_modules/.bin/snowboard mock docs/specification.apib"
   },
   "devDependencies": {
     "open-cli": "^5.0.0",
