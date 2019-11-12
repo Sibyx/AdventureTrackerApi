@@ -149,21 +149,6 @@ Default name for database is `adventuretracker_api` and data are stored in publi
 
 ### Create token [POST]
 
-Skupina endpointov zodpovedná za mazanie a vytváranie autorizačných tokenov pre prístup do systému. Tieto endpointy 
-budú používať na prístup bežný používatelia systému.
-
-Metóda slúži na vytvorenie autorizačného tokenu pre používateľa na základe zaslaného používateľského mena a heslo.
-
-V prípade zlej kombinácie, odpoveť servera je `401 Unauthorized ` s príslušnou chybou.
-
-Používateľské heslo nie je uložené v našej databáze, ale v TNG. Pri autentifikácií používateľa sa preposiela požiadavka
-na TNG a ak prebehne správne, XBionicApi vytvorí a vráti token.
-
-![Example for token exchange between user and API](assets/token_create.png)
-
-Nakoľko neukladáme informácie o používateľovi do `xbionic_api` databázy, je potrebné zabezpečiť vytvorenie `User`
-entity v prípade, že sa používateľ prihlasuje prvý krát cez TNG ku nám do API.
-
 **Endpoint metadata**
 
 | Description                | Value |
