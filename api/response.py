@@ -10,6 +10,8 @@ from django.http import HttpResponse, HttpRequest
 
 from django.contrib.gis.db.models import QuerySet
 
+from api import http_status
+
 
 class MessagePackEncoder(object):
     """
@@ -60,12 +62,24 @@ class Ordering:
 
 
 class SingleResponse(HttpResponse):
-    def __init__(self, data, **kwargs):
+    def __init__(self, data: dict, **kwargs):
         data = {
             'response': data,
             'metadata': []
         }
         kwargs.setdefault('content_type', 'application/json')
+        data = json.dumps(data, cls=DjangoJSONEncoder)
+
+        super().__init__(content=data, **kwargs)
+
+
+class ValidationResponse(HttpResponse):
+    def __init__(self, data: list, **kwargs):
+        data = {
+            'errors': data
+        }
+        kwargs.setdefault('content_type', 'application/json')
+        kwargs['status'] = http_status.HTTP_422_UNPROCESSABLE_ENTITY
         data = json.dumps(data, cls=DjangoJSONEncoder)
 
         super().__init__(content=data, **kwargs)

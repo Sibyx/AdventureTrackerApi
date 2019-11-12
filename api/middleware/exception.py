@@ -1,4 +1,4 @@
-from api.errors import ApiException
+from api.errors import ApiException, ValidationException
 
 
 class ExceptionMiddleware(object):

@@ -1,0 +1,211 @@
+FORMAT: 1A
+
+# AdventureTracker API
+
+Simple RESTful application interface implemented in [Django](https://www.djangoproject.com/) framework, which provide
+storage & synchronization service for AdventureTracker mobile app. The application is aimed to nice & simple creation
+of travel diaries. 
+
+## Version 
+
+Current version of API is `v1` and every endpoint HAVE TO contain version in the path.
+
+## Identifiers
+
+Because of synchronization and security reasons, we use 
+[UUID4](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random)) as unique identifiers of 
+dynamic records.
+
+## Schema
+
+All API requests should be transported using HTTPS. API supports these encodings (which are supplied in 
+`Accept-Encoding` HTTP header):
+
+- [MessagePack](https://msgpack.org/): `Accept-Encoding: application/x-msgpack` 
+- [JSON](http://www.json.org): `Accept-Encoding: application/json`
+
+All variables and object properties in API are matching [snake_case](https://en.wikipedia.org/wiki/Snake_case) 
+convention.
+
+### HTTP methods
+
+| HTTP method | Description                |
+|-------------|----------------------------|
+| `GET`       | Accessing resource         |
+| `POST`      | Creating new resource      |
+| `PUT`       | Editing of resource        |
+| `DELETE`    | Deleting resource          |
+
+### Status codes
+
+We use [HTTP Status Codes](https://http.cat/) to describe state of API response. Mostly we use these:
+
+| HTTP code         | Description                                                              |
+|-------------------|--------------------------------------------------------------------------|
+| `200` `201` `204` | Success response                                                         |
+| `401`             | Invalid user authentication (invalid credentials, inactive/blocked user) |
+| `403`             | Insufficient permissions for action                                      |
+| `404`             | Resource not found                                                       |
+| `422`             | Validation error with program-readable metadata                          |
+| `5xx`             | Internal server error (try it later)                                     |
+
+## Date and time
+
+All datetime information HAVE TO be represented as valid [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601).
+
+## Response format
+
+Response may contain `metadata` object with additional response data (for example pagination data). Format of metadata
+is specified for each request. Mostly we use these properties:
+
+- `page`: current page (counting from 1)
+- `limit`: Maximum elements per page 
+- `pages`: Total number of pages
+- `total`: Total number of records on all pages
+
+### Simple response
+
+```json
+{
+  "response": {
+    "token": "PRETTY_AWESOME_TOKEN"
+  }
+}
+```
+
+### Pagination response
+
+```json
+{
+  "items": [
+    {
+      "title": "Pigs",
+      "artist": "Pink Floyd"
+    },
+    {
+      "title": "Wish you were here",
+      "artist": "Pink Floyd"
+    }
+  ],
+  "metadata": {
+    "page": 1,
+    "limit": 2,
+    "pages": 14,
+    "total": 28
+  }
+}
+```
+
+### Error response
+
+If status code is not `2xx` or `422`, API returns error response with description. Trace property is returned only in
+debug mode of API.
+
+```json
+{
+  "error": {
+    "message": "Invalid permissions!",
+    "trace": {}
+  }
+}
+```
+
+### Validation error
+
+If status code of response is `422`, API returns validation error with detailed description. API always tries to return
+as much validation errors as possible in one call to increase probability of success of next request.
+
+```json
+{
+  "errors": [
+    {
+      "field": "password",
+      "details": [
+        "Too short!",
+        "Must contain a number."
+      ]
+    }
+  ]
+}
+```
+
+## Pagination and filtering
+
+Pagination is controlled by these GET variables. Every paginated end-point is marked and supports these variables:
+
+- `limit`: Maximum number of items per page
+- `page`: Number of page (counting from 1)
+
+## Data model
+
+Data model is represented in EER diagram stored in file [AdventureTrackerApi.mwb](AdventureTrackerApi.mwb). We use
+[PostgreSQL](https://www.postgresql.org/) with [PostGIS](https://postgis.net/) extension to store application data.
+
+Default name for database is `adventuretracker_api` and data are stored in public schema.
+
+# Group Authentication
+
+## Authentication tokens [/v1/tokens/]
+
+### Create token [POST]
+
+Skupina endpointov zodpovedná za mazanie a vytváranie autorizačných tokenov pre prístup do systému. Tieto endpointy 
+budú používať na prístup bežný používatelia systému.
+
+Metóda slúži na vytvorenie autorizačného tokenu pre používateľa na základe zaslaného používateľského mena a heslo.
+
+V prípade zlej kombinácie, odpoveť servera je `401 Unauthorized ` s príslušnou chybou.
+
+Používateľské heslo nie je uložené v našej databáze, ale v TNG. Pri autentifikácií používateľa sa preposiela požiadavka
+na TNG a ak prebehne správne, XBionicApi vytvorí a vráti token.
+
+![Example for token exchange between user and API](assets/token_create.png)
+
+Nakoľko neukladáme informácie o používateľovi do `xbionic_api` databázy, je potrebné zabezpečiť vytvorenie `User`
+entity v prípade, že sa používateľ prihlasuje prvý krát cez TNG ku nám do API.
+
+**Endpoint metadata**
+
+| Description                | Value |
+|----------------------------|-------|
+| Requires signature         | True  |
+| Requires authentication    | False |
+| Pagination                 | False |
+| Generates validation error | True  |
+
++ Request (application/json)
+    + Attributes
+        + username: `arthur.dent@gmail.com` (string, required) - User name in form of e-mail address.
+        + password: `Hitchhiker42` (string, required) - Password
++ Response 200 (application/json)
+    + Attributes (SingleResponse)
+        + response (object, required)
+            + token: `1a4ffb0c-1dca-4a8a-81a4-9a1367874994` (string, required) - Access token
++ Response 422 (application/json)
+    + Attributes (ValidationResponse)
+
+# Data Structures
+
+## ErrorResponse (object)
++ error (object, required) - Error object
+    - message: `Insufficient permissions for access to the resource!`: Description
+    - trace (object) - Python exception trace (only for DEBUG environment)
+
+## SingleResponse (object)
++ response (object, required) - Response object
++ metadata (object, required) - Metadata
+
+## ValidationResponse (object)
++ errors (array, required) - Validation error objects
+
+## ValidationError (object)
++ field: `email` (string, required) - Property name
++ details (array[string]) - Validation messages
+
+## PaginationResponse (object)
++ items  (array, required) - Response object
++ metadata (object, required) - Metadata
+    - page: 1 (number, required) - Current page (counting from 1)
+    - limit: 20 (number, required) - Maximum elements per page
+    - pages: 2 (number, required) - Total number of pages
+    - total: 26 (number, required) - Total number of records on all pages

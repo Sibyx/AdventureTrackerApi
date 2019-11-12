@@ -6,13 +6,15 @@ from django.http import JsonResponse
 
 from api import http_status
 
+from django.utils.translation import gettext as _
+
 
 class ApiException(Exception):
     def __init__(
-            self,
-            message: str,
-            status_code: int = http_status.HTTP_500_INTERNAL_SERVER_ERROR,
-            previous: Exception = None
+        self,
+        message: str,
+        status_code: int = http_status.HTTP_500_INTERNAL_SERVER_ERROR,
+        previous: Exception = None
     ):
         super().__init__(message)
 

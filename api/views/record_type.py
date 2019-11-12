@@ -2,13 +2,16 @@ from django.conf import settings
 from django.utils.translation import get_language
 from django.views.generic.base import View
 
-from api.response import PaginationResponse, Ordering
+from api import http_status
+from api.response import PaginationResponse, Ordering, SingleResponse
 from core.models import RecordType
 
 
 class RecordTypeManagement(View):
     def post(self, request):
-        pass
+        record_type = RecordType()
+
+        return SingleResponse(record_type.summary, status=http_status.HTTP_201_CREATED)
 
     def get(self, request):
         page = request.GET.get('page', 1)
@@ -32,5 +35,3 @@ class RecordTypeManagement(View):
         qs = RecordType.objects.filter(**parameters)
 
         return PaginationResponse(qs, page, limit, ordering=ordering)
-
-
