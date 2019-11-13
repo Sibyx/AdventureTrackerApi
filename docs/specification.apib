@@ -19,10 +19,10 @@ dynamic records.
 ## Schema
 
 All API requests should be transported using HTTPS. API supports these encodings (which are supplied in 
-`Accept-Encoding` HTTP header):
+`Accept` HTTP header):
 
-- [MessagePack](https://msgpack.org/): `Accept-Encoding: application/x-msgpack` 
-- [JSON](http://www.json.org): `Accept-Encoding: application/json`
+- [MessagePack](https://msgpack.org/): `Accept: application/x-msgpack` 
+- [JSON](http://www.json.org): `Accept: application/json`
 
 All variables and object properties in API are matching [snake_case](https://en.wikipedia.org/wiki/Snake_case) 
 convention.
@@ -188,9 +188,28 @@ Default name for database is `adventuretracker_api` and data are stored in publi
 + details (array[string]) - Validation messages
 
 ## PaginationResponse (object)
-+ items  (array, required) - Response object
++ items (array, required) - Response object
 + metadata (object, required) - Metadata
     - page: 1 (number, required) - Current page (counting from 1)
     - limit: 20 (number, required) - Maximum elements per page
     - pages: 2 (number, required) - Total number of pages
     - total: 26 (number, required) - Total number of records on all pages
+
+## Adventure (object)
++ id: `1a58f3cf-68e3-495b-bf0a-d78bc8fb4b1f` (string, required) - Unique adventure identifier (UUID4)
++ title: `Norway 2015` (string, required) - Adventure title
++ description: `A hitchhiking trip in Scandinavia` - Description of the adventure
++ members (array[string]) - List of adventure members (email)
+    - `arthur.dent@gmail.com`
+
+## Point (object)
++ latitude: 10.739527 (number, required) - GPS latitude
++ longitude: 59.927045 (number, required) - GPS longitude
++ altitude: 875.32 (number, required) - Altitude in meters
+
+## AdventureRecord (object)
++ id: `1f718c33-adf9-43c6-9d82-28dc7bd4d9a4` (string, required) - Unique adventure record identifier (UUID4)
++ record_type_id: `00f248bb-e81a-41fc-9e18-74fc8e804499` (string, required) - Identifier of record type
++ happened_at: `2019-11-13T19:18:22+00:00` (string, required) - Timestamp of record
++ description: `The weird nighstand on the bus stop` (string, required) - Record description
++ point (Point, required) - Location of the record
