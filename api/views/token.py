@@ -1,7 +1,6 @@
 import uuid
 
 from django.contrib.auth import get_user_model
-from django.utils import dateparse
 from django.utils.translation import gettext as _
 from django.views.generic.base import View
 

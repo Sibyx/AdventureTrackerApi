@@ -4,11 +4,11 @@ AdventureTracker is an open-source application for creating nice & shiny travel 
 Diaries are set of travel records coordinates, description, point-type and photos.
 
 This repository contains application interface which provide authentication & data synchronization across all front-end
-applications (mobile or web application). 
+applications (mobile or web application).
 
-The main idea is to create a free open-source platform with open-api to allow automation and custom data handling. 
+The main idea is to create a free open-source platform with open-api to allow automation and custom data handling.
 
-API is implemented as simple [Django](https://www.djangoproject.com/) for Python 3 with 
+API is implemented as simple [Django](https://www.djangoproject.com/) for Python 3 with
 [PostgreSQL](https://www.postgresql.org/) database for storage with [PostGIS](https://postgis.net/) extension for
 geo-spatial operations.
 
@@ -17,18 +17,18 @@ We use GitHub stack for project management (Issues, Wiki, Milestones etc.)
 Project code style is according to [PEP8](https://www.python.org/dev/peps/pep-0008/) and version control is applied
 as [git-flow](https://datasift.github.io/gitflow/IntroducingGitFlow.html).
 
-API specification is written using [API Blueprint](https://apiblueprint.org/) and we use 
+API specification is written using [API Blueprint](https://apiblueprint.org/) and we use
 [snowboard](https://github.com/bukalapak/snowboard) to create HTML output. You can find these files in `_docs`
-directory in project root. 
+directory in project root.
 
 ## Installation
 
 We use [pipenv](https://github.com/pypa/pipenv) to manage virtual environments & dependencies, so installation is
-simply done by typing `pipenv install` in cloned repository. 
+simply done by typing `pipenv install` in cloned repository.
 
 Minimum system requirements:
 
-- Python 3.6
+- Python 3.7+ (because of [ISO8601 issue](https://bugs.python.org/issue15873))
 - Pipenv
 - PostgreSQL 10 + PostGIS
 - NodeJS & Yarn (only for API blueprint docs)

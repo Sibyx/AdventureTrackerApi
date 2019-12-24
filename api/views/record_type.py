@@ -15,6 +15,7 @@ class RecordTypeManagement(View):
 
     def get(self, request):
         page = request.GET.get('page', 1)
+        limit = request.GET.get('limit', settings.PAGINATION['PER_PAGE'])
         language_code = get_language() or settings.LANGUAGE_CODE
 
         parameters = {
@@ -33,4 +34,4 @@ class RecordTypeManagement(View):
 
         qs = RecordType.objects.filter(**parameters)
 
-        return PaginationResponse(qs, page, ordering=ordering)
+        return PaginationResponse(qs, page, limit, ordering=ordering)

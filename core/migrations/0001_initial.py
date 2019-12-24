@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('deleted_at', models.DateTimeField(blank=True, null=True)),
-                ('status', django_enum_choices.fields.EnumChoiceField(choice_builder=django_enum_choices.choice_builders.value_value, choices=[('DRAFT', 'DRAFT'), ('PLANNED', 'PLANNED'), ('IN_PROGRESS', 'IN_PROGRESS'), ('FINISHED', 'FINISHED')], enum_class=core.models.adventure.AdventureType, max_length=11)),
+                ('status', django_enum_choices.fields.EnumChoiceField(choice_builder=django_enum_choices.choice_builders.value_value, choices=[('DRAFT', 'DRAFT'), ('PLANNED', 'PLANNED'), ('IN_PROGRESS', 'IN_PROGRESS'), ('FINISHED', 'FINISHED')], enum_class=core.models.adventure.AdventureStatus, max_length=11)),
                 ('happened_at', models.DateTimeField()),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.TextField(blank=True, null=True)),

@@ -20,8 +20,8 @@ class Ordering:
     column: str
     order: Order = Order.ASC
 
-    @staticmethod
-    def create_from_request(request, aliases: dict = None) -> 'Ordering':
+    @classmethod
+    def create_from_request(cls, request, aliases: dict = None) -> 'Ordering':
         column = request.GET.get('order_by', 'created_at')
         aliases = aliases or {}
 
