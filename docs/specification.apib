@@ -4,27 +4,27 @@ FORMAT: 1A
 
 Simple RESTful application interface implemented in [Django](https://www.djangoproject.com/) framework, which provide
 storage & synchronization service for AdventureTracker mobile app. The application is aimed to nice & simple creation
-of travel diaries. 
+of travel diaries.
 
-## Version 
+## Version
 
 Current version of API is `v1` and every endpoint HAVE TO contain version in the path.
 
 ## Identifiers
 
-Because of synchronization and security reasons, we use 
-[UUID4](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random)) as unique identifiers of 
+Because of synchronization and security reasons, we use
+[UUID4](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random)) as unique identifiers of
 dynamic records.
 
 ## Schema
 
-All API requests should be transported using HTTPS. API supports these encodings (which are supplied in 
+All API requests should be transported using HTTPS. API supports these encodings (which are supplied in
 `Accept` HTTP header):
 
-- [MessagePack](https://msgpack.org/): `Accept: application/x-msgpack` 
+- [MessagePack](https://msgpack.org/): `Accept: application/x-msgpack`
 - [JSON](http://www.json.org): `Accept: application/json`
 
-All variables and object properties in API are matching [snake_case](https://en.wikipedia.org/wiki/Snake_case) 
+All variables and object properties in API are matching [snake_case](https://en.wikipedia.org/wiki/Snake_case)
 convention.
 
 ### HTTP methods
@@ -59,7 +59,7 @@ Response may contain `metadata` object with additional response data (for exampl
 is specified for each request. Mostly we use these properties:
 
 - `page`: current page (counting from 1)
-- `limit`: Maximum elements per page 
+- `limit`: Maximum elements per page
 - `pages`: Total number of pages
 - `total`: Total number of records on all pages
 
@@ -117,15 +117,24 @@ as much validation errors as possible in one call to increase probability of suc
 
 ```json
 {
-  "errors": [
-    {
-      "field": "password",
-      "details": [
-        "Too short!",
-        "Must contain a number."
+  "errors": {
+    "title": [
+      "Too short!",
+      "Must contain a number."
+    ],
+    "artist": {
+      "name": [
+        "Must be present!"
       ]
-    }
-  ]
+    },
+    "songs": [
+      {
+        "errors": {
+          "title": "Must be present!"
+        }
+      }
+    ]
+  }
 }
 ```
 

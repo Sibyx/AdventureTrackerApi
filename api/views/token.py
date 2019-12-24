@@ -6,7 +6,8 @@ from django.utils.translation import gettext as _
 from django.views.generic.base import View
 
 from api import http_status
-from api.errors import ApiException
+from api.errors import ApiException, ValidationException
+from api.forms.tokens import CreateTokenForm
 from api.response import SingleResponse
 from core.models import Token
 
@@ -15,12 +16,13 @@ User = get_user_model()
 
 class TokenManagement(View):
     def post(self, request):
-        password = request.POST.get('password', None)
-        username = request.POST.get('username', None)
-        expires_at = request.POST.get('expires_at', None)
+        form = CreateTokenForm.create_from_request(request)
+
+        if not form.is_valid():
+            raise ValidationException(form)
 
         conditions = {
-            User.USERNAME_FIELD: username
+            User.USERNAME_FIELD: form.cleaned_data['username']
         }
 
         try:
@@ -30,9 +32,8 @@ class TokenManagement(View):
                 _("Invalid credentials!"), status_code=http_status.HTTP_401_UNAUTHORIZED, previous=e
             )
 
-        if not user.check_password(password):
-            raise ApiException(_("Invalid credentials!"),
-                               status_code=http_status.HTTP_401_UNAUTHORIZED)
+        if not user.check_password(form.cleaned_data['password']):
+            raise ApiException(_("Invalid credentials!"), status_code=http_status.HTTP_401_UNAUTHORIZED)
 
         if not user.is_active or not user.has_perm('add_token'):
             raise ApiException(_("Permission denied!"), status_code=http_status.HTTP_403_FORBIDDEN)
@@ -40,8 +41,7 @@ class TokenManagement(View):
         token = Token.objects.create(
             user=user,
             value=uuid.uuid4(),
-            expires_at=dateparse.parse_datetime(expires_at) if expires_at else None
+            expires_at=form.cleaned_data['expires_at']
         )
 
         return SingleResponse(data=token.summary, status=http_status.HTTP_201_CREATED)
-

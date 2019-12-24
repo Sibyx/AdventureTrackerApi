@@ -1,8 +1,9 @@
 import traceback
+from typing import Type
 
 import sentry_sdk
 from django.conf import settings
-from django.http import JsonResponse
+from django_request_formatter.forms import Form
 
 from api import http_status
 
@@ -50,7 +51,8 @@ class ApiException(Exception):
 
         return result
 
-    def create_response(self):
-        return JsonResponse({
-            'error': self.payload
-        }, status=self.status_code)
+
+class ValidationException(ApiException):
+    def __init__(self, form: Form):
+        super().__init__(_("Validation error!"), status_code=http_status.HTTP_422_UNPROCESSABLE_ENTITY)
+        self._form = form

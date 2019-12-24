@@ -1,4 +1,5 @@
 from api.errors import ApiException, ValidationException
+from api.response import ErrorResponse, ValidationResponse
 
 
 class ExceptionMiddleware(object):
@@ -10,5 +11,6 @@ class ExceptionMiddleware(object):
 
     def process_exception(self, request, exception):
         if isinstance(exception, ApiException):
-            return exception.create_response()
-
+            return ErrorResponse.create_from_exception(exception)
+        elif isinstance(exception, ValidationException):
+            return ValidationResponse.create_from_exception(exception)

@@ -1,35 +1,14 @@
-import datetime
-import decimal
 import json
 from dataclasses import dataclass
 from enum import Enum
 
+from django.conf import settings
 from django.core.paginator import Paginator
-from django.core.serializers.json import DjangoJSONEncoder
-from django.http import HttpResponse, HttpRequest
-
-from django.contrib.gis.db.models import QuerySet
+from django.http import HttpResponse
 
 from api import http_status
-
-
-class MessagePackEncoder(object):
-    """
-    TODO: MessagePack according  accept-type
-    https://github.com/juanriaza/django-rest-framework-msgpack/blob/master/rest_framework_msgpack/renderers.py
-    """
-
-    def encode(self, obj):
-        if isinstance(obj, datetime.datetime):
-            return {'__class__': 'datetime', 'as_str': obj.isoformat()}
-        elif isinstance(obj, datetime.date):
-            return {'__class__': 'date', 'as_str': obj.isoformat()}
-        elif isinstance(obj, datetime.time):
-            return {'__class__': 'time', 'as_str': obj.isoformat()}
-        elif isinstance(obj, decimal.Decimal):
-            return {'__class__': 'decimal', 'as_str': str(obj)}
-        else:
-            return obj
+from api.encoders import ApiJSONEncoder
+from api.errors import ValidationException, ApiException
 
 
 @dataclass
@@ -65,28 +44,50 @@ class SingleResponse(HttpResponse):
     def __init__(self, data: dict, **kwargs):
         data = {
             'response': data,
-            'metadata': []
         }
         kwargs.setdefault('content_type', 'application/json')
-        data = json.dumps(data, cls=DjangoJSONEncoder)
+        data = json.dumps(data, cls=ApiJSONEncoder)
 
         super().__init__(content=data, **kwargs)
+
+
+class ErrorResponse(HttpResponse):
+    def __init__(self, payload: dict, **kwargs):
+        data = {
+            'error': payload,
+            'metadata': {}
+        }
+
+        kwargs.setdefault('content_type', 'application/json')
+        data = json.dumps(data, cls=ApiJSONEncoder)
+
+        super().__init__(content=data, **kwargs)
+
+    @staticmethod
+    def create_from_exception(e: ApiException) -> 'ErrorResponse':
+        return ErrorResponse(e.payload, status=e.status_code)
 
 
 class ValidationResponse(HttpResponse):
-    def __init__(self, data: list, **kwargs):
+    def __init__(self, payload: dict, **kwargs):
         data = {
-            'errors': data
+            'errors': payload
         }
+
         kwargs.setdefault('content_type', 'application/json')
-        kwargs['status'] = http_status.HTTP_422_UNPROCESSABLE_ENTITY
-        data = json.dumps(data, cls=DjangoJSONEncoder)
+        data = json.dumps(data, cls=ApiJSONEncoder)
 
         super().__init__(content=data, **kwargs)
 
+    @staticmethod
+    def create_from_exception(e: ValidationException) -> 'ValidationResponse':
+        return ValidationResponse(e.payload, status=http_status.HTTP_422_UNPROCESSABLE_ENTITY)
+
 
 class PaginationResponse(HttpResponse):
-    def __init__(self, qs: QuerySet, page: int, limit: int, ordering: Ordering = None, **kwargs):
+    def __init__(
+        self, qs, page: int, limit: int = settings.PAGINATION['PER_PAGE'], ordering: Ordering = None, **kwargs
+    ):
         kwargs.setdefault('content_type', 'application/json')
 
         # Ordering
@@ -106,6 +107,7 @@ class PaginationResponse(HttpResponse):
                 'total': paginator.count
             }
         }
-        data = json.dumps(data, cls=DjangoJSONEncoder)
+
+        data = json.dumps(data, cls=ApiJSONEncoder)
 
         super().__init__(content=data, **kwargs)

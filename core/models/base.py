@@ -23,3 +23,11 @@ class BaseModel(models.Model):
 
     def hard_delete(self):
         super(BaseModel, self).delete()
+
+    def summary(self) -> dict:
+        """
+        Exception, ktorej uloha je upozornit na to, ze by default modely nie su serializovatelne a kazdy model
+        ma tuto metodu pretazit, ak bude vystupom z API
+        :return:
+        """
+        raise RuntimeError("Not implemented summary() method!")
