@@ -21,6 +21,6 @@ class SyncAdventureForm(CreateAdventureForm):
     deleted_at = fields.DateTimeField(required=False)
 
 
-class SynchronizationForm(Form):
+class SyncForm(Form):
     last_sync = fields.DateTimeField(required=False)
     adventures = FormFieldList(form=SyncAdventureForm, required=False)

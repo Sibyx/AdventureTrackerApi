@@ -41,7 +41,7 @@ class Ordering:
 
 
 class SingleResponse(HttpResponse):
-    def __init__(self, data: dict, **kwargs):
+    def __init__(self, data: dict = None, **kwargs):
         data = {
             'response': data,
         }

@@ -121,9 +121,11 @@ LANGUAGES = [
 
 TIME_ZONE = 'UTC'
 
+DATETIME_INPUT_FORMATS = ('%Y-%m-%dT%H:%M:%S%z',)
+
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 

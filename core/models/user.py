@@ -36,3 +36,11 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    def summary(self) -> dict:
+        return {
+            'id': self.id,
+            'email': self.email,
+            'name': self.name,
+            'surname': self.surname
+        }

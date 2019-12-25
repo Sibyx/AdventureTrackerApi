@@ -14,4 +14,4 @@ class CreateRecordForm(Form):
     user_id = fields.UUIDField()
     happened_at = fields.DateTimeField()
     description = fields.CharField(required=False)
-    point = FormField(form=PointForm, required=False)
+    location = FormField(form=PointForm, required=False)

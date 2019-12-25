@@ -17,7 +17,7 @@ class Record(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='records')
     happened_at = models.DateTimeField()
     description = models.TextField()
-    location = models.PointField(null=True, blank=True)
+    location = models.PointField(null=True, blank=True, dim=3)
 
     def summary(self) -> dict:
         response = {

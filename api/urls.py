@@ -1,6 +1,6 @@
 from django.urls import path
 
-from api.views import token, auth, record_type
+from api.views import token, auth, record_type, sync
 
 urlpatterns = [
     # Tokens
@@ -8,6 +8,9 @@ urlpatterns = [
 
     # Record types
     path('record_types', record_type.RecordTypeManagement.as_view()),
+
+    # Sync
+    path('sync', sync.sync, name='sync'),
 
     # Auth
     path('auth/validate', auth.validate, name='auth-create'),

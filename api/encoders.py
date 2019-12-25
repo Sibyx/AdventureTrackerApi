@@ -7,6 +7,7 @@ from django.core.paginator import Page
 from django.core.serializers.json import DjangoJSONEncoder
 
 from core.models.base import BaseModel
+from core.querysets.base import BaseQuerySet
 
 
 class ApiJSONEncoder(DjangoJSONEncoder):
@@ -14,13 +15,15 @@ class ApiJSONEncoder(DjangoJSONEncoder):
         if isinstance(o, decimal.Decimal):
             return float(o)
         if isinstance(o, BaseModel):
-            return o.summary
+            return o.summary()
         if isinstance(o, UUID):
             return str(o)
         if isinstance(o, Page):
             return o.object_list
         if isinstance(o, Enum):
             return o.value
+        if isinstance(o, BaseQuerySet):
+            return list(o)
         return DjangoJSONEncoder.default(self, o)
 
 
