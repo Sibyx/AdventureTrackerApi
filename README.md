@@ -38,7 +38,7 @@ Minimum system requirements:
 - [Django](https://www.djangoproject.com/): Back-end framework
 - [python-dotenv](https://github.com/theskumar/python-dotenv): Configuration using .env files
 - [django-enum-choices](https://github.com/HackSoftware/django-enum-choices): Enum support for Django ORM
-- [pydantic](https://github.com/samuelcolvin/pydantic): Python DataClass typing validations
+- [django_request_formatter](https://github.com/Sibyx/django_request_formatter): Request validation
 
 ---
 With ❤️ Hobbits (c) 2019
