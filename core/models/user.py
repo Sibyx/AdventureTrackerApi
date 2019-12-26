@@ -37,10 +37,14 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    @property
     def summary(self) -> dict:
         return {
             'id': self.id,
             'email': self.email,
             'name': self.name,
-            'surname': self.surname
+            'surname': self.surname,
+            'last_login': self.last_login,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }

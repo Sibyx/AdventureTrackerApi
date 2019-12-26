@@ -499,9 +499,9 @@ core-js@^2.6.5:
   integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
 
 core-js@^3.2.1:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.0.tgz#2b854e451de1967d1e29896025cdc13a2518d9ea"
-  integrity sha512-AHPTNKzyB+YwgDWoSOCaid9PUSEF6781vsfiK8qUz62zRR448/XgK2NtCbpiUGizbep8Lrpt0Du19PpGGZvw3Q==
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.1.tgz#39d5e2e346258cc01eb7d44345b1c3c014ca3f05"
+  integrity sha512-186WjSik2iTGfDjfdCZAxv2ormxtKgemjC3SI6PL31qOA0j5LhTDVjHChccoc7brwLvpvLPiMyRlcO88C4l1QQ==
 
 cors@^2.8.5:
   version "2.8.5"
@@ -2070,9 +2070,9 @@ supports-color@^6.1.0:
     has-flag "^3.0.0"
 
 svelte@^3.6.5:
-  version "3.16.6"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.16.6.tgz#0caaec6515fe498bc5fe464cfccf8ce6a88be6c9"
-  integrity sha512-RnxbplgTNON+Xqc5FbSdCsXogeevtnmpNdXJJcUJZGOrNhPheU2hba8ot2h+ZmfzSWfkqd5e9FWibCeZ3L56TQ==
+  version "3.16.7"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.16.7.tgz#9ade80a4bbbac95595c676dd817222f632fa2c07"
+  integrity sha512-egrva1UklB1n7KAv179IhDpQzMGAvubJUlOQ9PitmmZmAfrCUEgrQnx2vPxn2s+mGV3aYegXvJ/yQ35N2SfnYQ==
 
 table@^5.2.3:
   version "5.4.6"

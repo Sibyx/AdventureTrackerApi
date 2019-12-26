@@ -13,7 +13,7 @@ User = get_user_model()
 class TokenBackend(ModelBackend):
     def _by_token(self, token) -> Union[User, None]:
         try:
-            t = Token.objects.get(value=token)
+            t = Token.objects.get(pk=token)
         except (Token.DoesNotExist, ValidationError):
             return None
 

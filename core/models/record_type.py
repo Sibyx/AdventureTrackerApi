@@ -18,8 +18,8 @@ class RecordTypeLocalization(object):
     description: str
     examples: List[str]
 
-    @staticmethod
-    def create_from_dict(data: dict) -> 'RecordTypeLocalization':
+    @classmethod
+    def create_from_dict(cls, data: dict) -> 'RecordTypeLocalization':
         return RecordTypeLocalization(
             title=data['title'],
             description=data['description'],
@@ -55,10 +55,11 @@ class RecordType(BaseModel):
             raise ApiException(_("Invalid RecordType localization values"), previous=e)
 
         return {
+            'id': self.id,
             'code': self.code,
             'title': localization.title,
             'description': localization.description,
             'examples': localization.examples,
-            'created_at': self.created_at.isoformat(),
-            'updated_at': self.updated_at.isoformat()
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }

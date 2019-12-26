@@ -15,7 +15,7 @@ class ApiJSONEncoder(DjangoJSONEncoder):
         if isinstance(o, decimal.Decimal):
             return float(o)
         if isinstance(o, BaseModel):
-            return o.summary()
+            return o.summary
         if isinstance(o, UUID):
             return str(o)
         if isinstance(o, Page):

@@ -39,7 +39,6 @@ class TokenManagement(View):
 
         token = Token.objects.create(
             user=user,
-            value=uuid.uuid4(),
             expires_at=form.cleaned_data['expires_at']
         )
 

@@ -24,6 +24,7 @@ class Adventure(BaseModel):
     started_at = models.DateTimeField()
     finished_at = models.DateTimeField(null=True, blank=True)
 
+    @property
     def summary(self) -> dict:
         response = {
             'id': self.id,

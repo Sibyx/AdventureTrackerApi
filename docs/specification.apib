@@ -154,7 +154,7 @@ Default name for database is `adventuretracker_api` and data are stored in publi
 
 # Group Authentication
 
-## Authentication tokens [/v1/tokens/]
+## Authentication tokens [/v1/tokens]
 
 ### Create token [POST]
 
@@ -171,10 +171,69 @@ Default name for database is `adventuretracker_api` and data are stored in publi
     + Attributes
         + username: `arthur.dent@gmail.com` (string, required) - User name in form of e-mail address.
         + password: `Hitchhiker42` (string, required) - Password
++ Response 201 (application/json)
+    + Attributes (SingleResponse)
+        + response (Token, required)
++ Response 422 (application/json)
+    + Attributes (ValidationResponse)
+
+## Validate authentication [/v1/auth/validate]
+
+### Validate token [GET]
+
+**Endpoint metadata**
+
+| Description                | Value |
+|----------------------------|-------|
+| Requires signature         | True  |
+| Requires authentication    | True  |
+| Pagination                 | False |
+| Generates validation error | False |
+
 + Response 200 (application/json)
     + Attributes (SingleResponse)
-        + response (object, required)
-            + token: `1a4ffb0c-1dca-4a8a-81a4-9a1367874994` (string, required) - Access token
+        + response (Token, required)
+
+## Logout [/v1/auth/logout]
+
+### Remove token [DELETE]
+
+**Endpoint metadata**
+
+| Description                | Value |
+|----------------------------|-------|
+| Requires signature         | True  |
+| Requires authentication    | True  |
+| Pagination                 | False |
+| Generates validation error | False |
+
++ Response 204
+
+# Group Sync
+
+## Sync [/v1/sync]
+
+### Sync device data [POST]
+
+End-point vracia URL, na ktorej používateľ vykoná platbu a po jej vykonaní je následne presmerovaný naspäť do
+XBionic API (špeciálneho webového rozhrania, viac informácii v GitLab Wiki).
+
+**Endpoint metadata**
+
+| Description                | Value |
+|----------------------------|-------|
+| Requires signature         | True  |
+| Requires authentication    | True  |
+| Pagination                 | False |
+| Generates validation error | True  |
+
++ Request (application/json)
+    + Attributes (SyncRequest)
+
++ Response 200 (application/json)
+    + Attributes (SingleResponse)
+        + response (SyncResponse, required)
+
 + Response 422 (application/json)
     + Attributes (ValidationResponse)
 
@@ -204,14 +263,49 @@ Default name for database is `adventuretracker_api` and data are stored in publi
     - pages: 2 (number, required) - Total number of pages
     - total: 26 (number, required) - Total number of records on all pages
 
+## Token (object)
++ id: `1a58f3cf-68e3-495b-bf0a-d78bc8fb4b1f` (string, required) - Unique token identifier (UUID4)
++ user_id: `d59d3dd6-a1a1-4413-942e-5a3506046f6c` (string, required) - Token owner
++ expires_at: `2015-07-07T10:13:00+00:00` (string, nullable) - The expiration timestamp
++ created_at: `2019-12-26T08:25:50.211911+00:00` (string, required) - Timestamp of the creation
+
+## RecordTypeResponse (object)
++ id: `71ccf8c1-87ad-47aa-8a24-3c7d571e7f69` (string, required) - Unique record type identifier
++ code: `camping` (string, required) - Unique record type code
++ title: `Camping` (string, required) - Localized record type title
++ description: `Campsite, nightstand or place where you stayed over night with place for a tent.` (string, required)
++ examples (array[string], required) - Localized example values
+
 ## Adventure (object)
 + id: `1a58f3cf-68e3-495b-bf0a-d78bc8fb4b1f` (string, required) - Unique adventure identifier (UUID4)
-+ title: `Norway 2015` (string, required) - Adventure title
-+ description: `A hitchhiking trip in Scandinavia` - Description of the adventure
-+ members (array[string]) - List of adventure members (email)
-    - `arthur.dent@gmail.com`
++ status (enum[string], required) - Adventure status
+    + Default: `draft`
 
-## Point (object)
+    + Members
+        + `draft`
+        + `in_progress`
+        + `finished`
+
++ name: `Norway 2015` (string, required) - Adventure title
++ description: `A hitchhiking trip in Scandinavia` (string) - Description of the adventure
++ members (array[string]) - List of adventure members (email)
+    - `845dd303-b1bf-4a5f-b1d7-4f4525ba5f4f`
+    - `ac18a403-bd34-472d-b6c8-e7cac67dab5b`
++ started_at: `2015-07-07T10:13:00+00:00` (string, required) - Expected start of the adventure
++ finished_at: `2015-08-04T21:59:00+00:00` (string) - Expected end of the adventure
+
+## AdventureSync (Adventure)
++ updated_at: `2019-11-13T19:18:22+00:00` (string, required) - Timestamp of the last modification
++ records (array[AdventureRecordSync])
+
+## AdventureResponse (Adventure)
++ created_at: `2019-11-13T19:18:22+00:00` (string, required) - Timestamp of the creation
++ updated_at: `2019-11-13T19:18:22+00:00` (string, required) - Timestamp of the last modification
+
+## AdventureSyncResponse (AdventureResponse)
++ records (array[AdventureRecordResponse])
+
+## Location (object)
 + latitude: 10.739527 (number, required) - GPS latitude
 + longitude: 59.927045 (number, required) - GPS longitude
 + altitude: 875.32 (number, required) - Altitude in meters
@@ -219,6 +313,35 @@ Default name for database is `adventuretracker_api` and data are stored in publi
 ## AdventureRecord (object)
 + id: `1f718c33-adf9-43c6-9d82-28dc7bd4d9a4` (string, required) - Unique adventure record identifier (UUID4)
 + record_type_id: `00f248bb-e81a-41fc-9e18-74fc8e804499` (string, required) - Identifier of record type
++ user_id: `d59d3dd6-a1a1-4413-942e-5a3506046f6c` (string, required) - Creator ID (UUID4)
 + happened_at: `2019-11-13T19:18:22+00:00` (string, required) - Timestamp of record
 + description: `The weird nighstand on the bus stop` (string, required) - Record description
-+ point (Point, required) - Location of the record
++ location (Location, required) - Location of the record
+
+## AdventureRecordSync (AdventureRecord)
++ updated_at: `2019-11-13T19:18:22+00:00` (string, required) - Timestamp of the last modification
+
+## AdventureRecordResponse (AdventureRecord)
++ created_at: `2019-11-13T19:18:22+00:00` (string, required) - Timestamp of the creation
++ updated_at: `2019-11-13T19:18:22+00:00` (string, required) - Timestamp of the last modification
+
+## User (object)
++ id: `1f718c33-adf9-43c6-9d82-28dc7bd4d9a4` (string, required) - Unique user identifier (UUID4)
++ email: `arthur.dent@gmail.com` (string, required) - User e-mail
++ name: `name` (string, required) - User name
++ surname: `surname` (string, required) - User surname
+
+## UserResponse (User)
++ last_login: `2019-11-13T19:18:22+00:00` (string, required) - Last user login (token create)
++ created_at: `2019-11-13T19:18:22+00:00` (string, required) - Timestamp of the creation
++ updated_at: `2019-11-13T19:18:22+00:00` (string, required) - Timestamp of the last modification
+
+## SyncRequest (object)
++ last_sync: `2019-11-13T19:18:22+00:00` (string) - Timestamp of the last device synchronisation
++ user (User)
++ adventures (array[AdventureSync])
+
+## SyncResponse
++ user (UserResponse)
++ adventures (array[AdventureSync])
++ record_types (array[RecordTypeResponse])

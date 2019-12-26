@@ -19,6 +19,7 @@ class Record(BaseModel):
     description = models.TextField()
     location = models.PointField(null=True, blank=True, dim=3)
 
+    @property
     def summary(self) -> dict:
         response = {
             'id': self.id,
@@ -26,7 +27,9 @@ class Record(BaseModel):
             'record_type_id': self.record_type_id,
             'user_id': self.user_id,
             'happened_at': self.happened_at,
-            'description': self.description
+            'description': self.description,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }
 
         if self.location:

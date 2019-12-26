@@ -5,6 +5,7 @@ from sentry_sdk import configure_scope
 
 from api import http_status
 from api.errors import ApiException
+from api.response import ErrorResponse
 
 
 class TokenMiddleware(object):
@@ -18,13 +19,15 @@ class TokenMiddleware(object):
             return self.get_response(request)
 
         if len(auth_header) != 2:
-            return ApiException(_("Improperly formatted token"), status_code=http_status.HTTP_400_BAD_REQUEST).create_response()
+            return ErrorResponse.create_from_exception(
+                ApiException(_("Improperly formatted token"), status_code=http_status.HTTP_400_BAD_REQUEST)
+            )
 
         user = auth.authenticate(token=auth_header[1])
 
         if user:
             request.user = user
-            request.token = user.tokens.get(value=auth_header[1])
+            request.token = user.tokens.get(pk=auth_header[1])
 
             with configure_scope() as scope:
                 scope.user = {
