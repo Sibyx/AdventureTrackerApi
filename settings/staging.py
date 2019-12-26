@@ -8,7 +8,7 @@ DEBUG = False
 TIME_ZONE = 'UTC'
 
 ALLOWED_HOSTS = [
-    'adventures.jakubdubec.me'
+    'api.adventures.jakubdubec.me'
 ]
 
 sentry_sdk.init(

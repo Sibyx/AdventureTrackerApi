@@ -12,7 +12,7 @@ warnings.filterwarnings(action='ignore', module='.*paramiko.*')
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 PROJECT_NAME = 'adventure_tracker_api'
-REPO_URL = 'git@github.com:Sibyx/AdventureTrackerApi.git'
+REPO_URL = 'https://github.com/Sibyx/AdventureTrackerApi.git'
 KEEP_RELEASES = 5
 
 
@@ -78,7 +78,7 @@ def deploy(ctx, destination):
     # Set deploy to as current directory
     with ctx.cd(f"{config['deploy_to']}/releases"):
         # Clone repository
-        ctx.run(f"git clone {REPO_URL} {release}")
+        ctx.run(f"git clone {REPO_URL} {release}", pty=True)
 
     # Set current release directory as working directory
     with ctx.cd(f"{config['deploy_to']}/releases/{release}"):
