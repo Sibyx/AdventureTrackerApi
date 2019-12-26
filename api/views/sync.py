@@ -62,7 +62,7 @@ def _sync_adventure(user: User, adventure_data: dict):
         # Members
         adventure.users.clear()
         if user.id not in adventure_data['members']:
-            adventure_data['members'].add(user.id)
+            adventure_data['members'].append(user.id)
         for member in adventure_data['members']:
             adventure.users.add(member)
 
