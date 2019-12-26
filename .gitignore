@@ -9,3 +9,5 @@
 /node_modules
 /media/*
 !/media/.gitkeep
+.deploy
+!.deploy/example.json

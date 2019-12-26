@@ -28,12 +28,6 @@ class TokenMiddleware(object):
         if user:
             request.user = user
             request.token = user.tokens.get(pk=auth_header[1])
-
-            with configure_scope() as scope:
-                scope.user = {
-                    "id": user.pk,
-                    "email": user.email
-                }
         else:
             request.user = AnonymousUser()
             request.token = None

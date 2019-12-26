@@ -4,11 +4,12 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+fabric = "*"
 
 [packages]
 django = "==3.0.*"
 python-dotenv = "*"
-sentry-sdk = "*"
+sentry-sdk = "==0.13.5"
 psycopg2-binary = "*"
 django-enum-choices = "*"
 pillow = "*"
@@ -16,6 +17,7 @@ argon2-cffi = "*"
 pydantic = "*"
 django-request-formatter = "*"
 msgpack = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"

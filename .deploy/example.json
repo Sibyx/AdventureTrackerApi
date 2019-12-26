@@ -1,0 +1,22 @@
+{
+	"ssh": {
+		"host": "adventures.example.com",
+		"port": 22,
+		"user": "ssh_user",
+		"ssh_key": "/path/to/ssh/key"
+	},
+	"env": {
+		"DJANGO_SETTINGS_MODULE": "settings.production",
+		"DATABASE_HOST": "127.0.0.1",
+		"DATABASE_PORT": 5432,
+		"DATABASE_USER": "adventures",
+		"DATABASE_PASSWORD": "",
+		"DATABASE_NAME": "adventure_tracker",
+		"SENTRY_ENVIRONMENT": "production",
+		"SENTRY_DSN": "",
+		"BASE_URL": "https://api.adventures.example.com"
+	},
+	"revision": "master",
+	"deploy_to": "~/web/api",
+	"python": "/usr/bin/python3.7"
+}
