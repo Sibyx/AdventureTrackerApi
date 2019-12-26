@@ -17,13 +17,13 @@ import os
 
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import path, include
 
 from api import urls as api_urls
 
 
 urlpatterns = []
-urlpatterns += api_urls.urlpatterns
+urlpatterns += [path(r'v1/', include(api_urls.urlpatterns))]
 
 if os.getenv('DJANGO_SETTINGS_MODULE') == 'settings.development':
     urlpatterns += static(settings.STATIC_URL)
