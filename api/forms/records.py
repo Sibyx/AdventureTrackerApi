@@ -1,5 +1,5 @@
 from django.forms import fields
-from django_request_formatter.fields import FormField
+from django_request_formatter.fields import FormField, FieldList
 from django_request_formatter.forms import Form
 
 
@@ -15,3 +15,4 @@ class CreateRecordForm(Form):
     happened_at = fields.DateTimeField()
     description = fields.CharField(required=False)
     location = FormField(form=PointForm, required=False)
+    photos = FieldList(field=fields.UUIDField(), required=False)

@@ -110,11 +110,11 @@
         },
         "django-request-formatter": {
             "hashes": [
-                "sha256:0a6a5d42f650b1bae9a7f8406406c5145baee8ce6e920ca6dffbb936fb470eb7",
-                "sha256:d6543eba14536cb0875e595a0b261803be684df6b3f2d95f1aba632b728a1f53"
+                "sha256:09a79b722e470335153f6f5bbd6d3b1079d22b4e9b92c2c4b6eea560759def93",
+                "sha256:588a3d11c0381090e887250ad0064106d621df6733ead9fa1629e669dd0f0687"
             ],
             "index": "pypi",
-            "version": "==0.5.4"
+            "version": "==0.5.6"
         },
         "gunicorn": {
             "hashes": [
