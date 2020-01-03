@@ -42,11 +42,14 @@ class Ordering:
 
 class SingleResponse(HttpResponse):
     def __init__(self, data: dict = None, **kwargs):
-        data = {
-            'response': data,
-        }
-        kwargs.setdefault('content_type', 'application/json')
-        data = json.dumps(data, cls=ApiJSONEncoder)
+        if data is None:
+            kwargs['status'] = http_status.HTTP_204_NO_CONTENT
+        else:
+            data = {
+                'response': data,
+            }
+            kwargs.setdefault('content_type', 'application/json')
+            data = json.dumps(data, cls=ApiJSONEncoder)
 
         super().__init__(content=data, **kwargs)
 

@@ -1,10 +1,10 @@
+from dataclasses import dataclass
 from typing import List
 
 from django.conf import settings
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
 from django.utils.translation import get_language
-from pydantic.dataclasses import dataclass
 
 from api.errors import ApiException
 from core.models.base import BaseModel

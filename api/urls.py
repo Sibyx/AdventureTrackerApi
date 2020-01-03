@@ -1,6 +1,6 @@
 from django.urls import path
 
-from api.views import token, auth, record_type, sync, status
+from api.views import token, auth, record_type, sync, status, photo
 
 urlpatterns = [
     # Tokens
@@ -8,6 +8,9 @@ urlpatterns = [
 
     # Record types
     path('record_types', record_type.RecordTypeManagement.as_view()),
+
+    # Photos
+    path('photos/<uuid:photo_id>', photo.PhotoDetailView.as_view()),
 
     # Sync
     path('sync', sync.sync, name='sync'),

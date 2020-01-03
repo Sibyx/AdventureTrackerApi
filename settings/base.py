@@ -18,6 +18,8 @@ SECRET_KEY = 'wn)bwz#2n=4_7#(!)+@+mmhqf^(ykc8#(f9gd9^x84h$!asy-s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+BASE_URL = os.getenv('BASE_URL', None)
+
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -139,6 +141,13 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+ALLOWED_PHOTO_MIMES = [
+    'image/png',
+    'image/jpeg',
+]
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 20
 
 PAGINATION = {
     'PER_PAGE': 15
