@@ -61,6 +61,7 @@ def setup(ctx, destination):
     with ctx.cd(config['deploy_to']):
         # Create directory structure
         ctx.run(f"mkdir shared")
+        ctx.run(f"mkdir shared/media")
         ctx.run(f"mkdir releases")
 
         # Create Python virtualenv
@@ -73,7 +74,7 @@ def deploy(ctx, destination):
     ctx = _get_connection(ctx, config['ssh'])
 
     release = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-    shared_env = f"{config['deploy_to']}/shared/env"
+    shared = f"{config['deploy_to']}/shared/env"
 
     # Set deploy to as current directory
     with ctx.cd(f"{config['deploy_to']}/releases"):
@@ -88,10 +89,10 @@ def deploy(ctx, destination):
         ctx.run("git pull")
 
         # Install dependencies
-        ctx.run(f"{shared_env}/bin/pip install --upgrade pip")
-        ctx.run(f"{shared_env}/bin/pip install pipfile-requirements")
-        ctx.run(f"{shared_env}/bin/pipfile2req Pipfile.lock > requirements.txt")
-        ctx.run(f"{shared_env}/bin/pip install -r requirements.txt")
+        ctx.run(f"{shared}/env/bin/pip install --upgrade pip")
+        ctx.run(f"{shared}/env/bin/pip install pipfile-requirements")
+        ctx.run(f"{shared}/env/bin/pipfile2req Pipfile.lock > requirements.txt")
+        ctx.run(f"{shared}/env/bin/pip install -r requirements.txt")
 
         # Create .env file
         ctx.run("touch .env")
@@ -100,10 +101,17 @@ def deploy(ctx, destination):
 
         # Migrate
         ctx.run(
-            f"DJANGO_SETTINGS_MODULE={config['env']['DJANGO_SETTINGS_MODULE']} {shared_env}/bin/python manage.py migrate --no-input")
+            f"DJANGO_SETTINGS_MODULE={config['env']['DJANGO_SETTINGS_MODULE']} {shared}/env/bin/python manage.py migrate --no-input")
 
-        # Remove sensitive files
-        ctx.run("rm -rf .deploy")
+        # Fixtures
+        ctx.run(
+            f"DJANGO_SETTINGS_MODULE={config['env']['DJANGO_SETTINGS_MODULE']} {shared}/env/bin/python manage.py loaddata core/fixtures/initial.json")
+
+        # Remove sensitive and useless files
+        ctx.run("rm -rf .deploy media")
+
+        # Link shared data
+        ctx.run(f"ln -s {shared}/media media")
 
     # Publish release
     with ctx.cd(config['deploy_to']):

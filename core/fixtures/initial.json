@@ -1,0 +1,220 @@
+[
+{
+  "model": "core.recordtype",
+  "pk": "06425c70-bbca-4fdf-8889-a2da12225f9b",
+  "fields": {
+    "created_at": "2019-09-03T20:46:34.106Z",
+    "updated_at": "2019-09-03T21:46:34.106Z",
+    "deleted_at": null,
+    "code": "interesting",
+    "localizations": {
+      "en": {
+        "title": "Interesting",
+        "examples": [
+          "seaside",
+          "lake",
+          "fancy house",
+          "interesting bar"
+        ],
+        "description": "Something interesting to see"
+      },
+      "sk": {
+        "title": "Zauj\u00edmavos\u0165",
+        "examples": [
+          "v\u00fdh\u013ead",
+          "jazero",
+          "srandovn\u00fd dom",
+          "zauj\u00edmav\u00fd bar"
+        ],
+        "description": "Zauj\u00edmav\u00e1 budova, miesto alebo oblas\u0165"
+      }
+    }
+  }
+},
+{
+  "model": "core.recordtype",
+  "pk": "08c773e9-bd4d-4772-b0e5-5d5bf7ffd4c9",
+  "fields": {
+    "created_at": "2019-09-03T08:46:34.106Z",
+    "updated_at": "2019-09-03T21:46:34.106Z",
+    "deleted_at": null,
+    "code": "story",
+    "localizations": {
+      "en": {
+        "title": "Story",
+        "examples": [
+          "blog post",
+          "story",
+          "poem",
+          "status"
+        ],
+        "description": "Storytelling point"
+      },
+      "sk": {
+        "title": "Pr\u00edbeh",
+        "examples": [
+          "blogov\u00fd pr\u00edspevok",
+          "pr\u00edbeh",
+          "b\u00e1se\u0148",
+          "status"
+        ],
+        "description": "Autorsk\u00fd pr\u00edspevok"
+      }
+    }
+  }
+},
+{
+  "model": "core.recordtype",
+  "pk": "2ad9eab9-9d55-4ed8-a609-bd838bdd7a61",
+  "fields": {
+    "created_at": "2019-09-03T10:46:34.108Z",
+    "updated_at": "2019-09-03T21:46:34.108Z",
+    "deleted_at": null,
+    "code": "culture",
+    "localizations": {
+      "en": {
+        "title": "Culture",
+        "examples": [
+          "museum",
+          "gallery",
+          "concert",
+          "wedding"
+        ],
+        "description": "Cultural activity or any cultural event"
+      },
+      "sk": {
+        "title": "Kult\u00fara",
+        "examples": [
+          "m\u00fazeum",
+          "gal\u00e9ria",
+          "koncert",
+          "svadba"
+        ],
+        "description": "Kult\u00farna udalos\u0165 alebo aktivita"
+      }
+    }
+  }
+},
+{
+  "model": "core.recordtype",
+  "pk": "71ccf8c1-87ad-47aa-8a24-3c7d571e7f69",
+  "fields": {
+    "created_at": "2019-09-03T11:46:34.105Z",
+    "updated_at": "2019-09-03T21:46:34.105Z",
+    "deleted_at": null,
+    "code": "camping",
+    "localizations": {
+      "en": {
+        "title": "Camping",
+        "examples": [
+          "campsite",
+          "camping",
+          "hamak",
+          "cabin"
+        ],
+        "description": "Campsite, nightstand or place where you stayed over night with place for a tent."
+      },
+      "sk": {
+        "title": "Kempovanie",
+        "examples": [
+          "kemp",
+          "stanovanie",
+          "hojdacia siet",
+          "sala\u0161"
+        ],
+        "description": "Kempovanie v pr\u00edrode. Miesto kde bola str\u00e1ven\u00e1 noc a je tam miesto na stan."
+      }
+    }
+  }
+},
+{
+  "model": "core.recordtype",
+  "pk": "770a7600-84f2-4097-8884-30b6ed4cf89c",
+  "fields": {
+    "created_at": "2019-09-04T21:46:34.107Z",
+    "updated_at": "2019-09-03T21:46:34.107Z",
+    "deleted_at": null,
+    "code": "epic",
+    "localizations": {
+      "en": {
+        "title": "Epic",
+        "examples": [
+          "mountain peek",
+          "national border",
+          "national park"
+        ],
+        "description": "Sub-destination or a important part of the adventure."
+      },
+      "sk": {
+        "title": "Epic",
+        "examples": [
+          "horsk\u00fd vrch",
+          "\u0161t\u00e1tna hranica",
+          "n\u00e1rodny park"
+        ],
+        "description": "\u010ciasto\u010dn\u00fd cie\u013e v\u00fdletu alebo jeho dole\u017eit\u00e1 \u010das\u0165, pr\u00edpade aktivita."
+      }
+    }
+  }
+},
+{
+  "model": "core.recordtype",
+  "pk": "81749ee8-9f8a-4809-9f93-3338443183c4",
+  "fields": {
+    "created_at": "2019-09-03T13:46:34.102Z",
+    "updated_at": "2019-09-03T21:46:34.102Z",
+    "deleted_at": null,
+    "code": "transfer",
+    "localizations": {
+      "en": {
+        "title": "Transfer",
+        "examples": [
+          "bus stop",
+          "station",
+          "airport"
+        ],
+        "description": "The necessary transfer point in order to get to the another destination"
+      },
+      "sk": {
+        "title": "Prestup",
+        "examples": [
+          "autobusov\u00e1 zast\u00e1vka",
+          "stanica",
+          "letisko"
+        ],
+        "description": "Prestupov\u00e9 miesto (nutn\u00e1 zast\u00e1vka na ceste kv\u00f4li spojom)"
+      }
+    }
+  }
+},
+{
+  "model": "core.recordtype",
+  "pk": "b5b112aa-117d-40fc-84f6-883070528a50",
+  "fields": {
+    "created_at": "2019-09-03T15:46:34.108Z",
+    "updated_at": "2019-09-03T21:46:34.108Z",
+    "deleted_at": null,
+    "code": "activity",
+    "localizations": {
+      "en": {
+        "title": "Activity",
+        "examples": [
+          "ping pong",
+          "zip-line",
+          "climbing"
+        ],
+        "description": "Activity of any kind"
+      },
+      "sk": {
+        "title": "Aktivita",
+        "examples": [
+          "ping pong",
+          "zip-line",
+          "horolezectvo"
+        ],
+        "description": "Telesn\u00e1 aktivita ak\u00e9hoko\u013evek typu"
+      }
+    }
+  }
+}
+]

@@ -33,6 +33,19 @@ Minimum system requirements:
 - PostgreSQL 10 + PostGIS
 - NodeJS & Yarn (only for API blueprint docs)
 
+### Database seed
+
+Initial database data are provided in `core/fixtures/initial.json` and you can load them by executing
+`python manage.py loaddata core/fixtures/initial.json`. This file is changing over the time to provide new basic default
+values (or field localization for example).
+
+**Development**
+
+We use [django serializer](https://docs.djangoproject.com/en/3.0/howto/initial-data/) to create `initial.json`, if you
+want to update this file, execute `python manage.py dumpdata --indent 2 -o core/fixtures/initial.json core.RecordType`.
+
+Please always update the existing seed (do not replace primary keys).
+
 ## Libraries
 
 - [Django](https://www.djangoproject.com/): Back-end framework
