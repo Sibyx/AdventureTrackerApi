@@ -74,7 +74,7 @@ def deploy(ctx, destination):
     ctx = _get_connection(ctx, config['ssh'])
 
     release = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-    shared = f"{config['deploy_to']}/shared/env"
+    shared = f"{config['deploy_to']}/shared"
 
     # Set deploy to as current directory
     with ctx.cd(f"{config['deploy_to']}/releases"):
