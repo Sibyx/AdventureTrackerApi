@@ -9,7 +9,7 @@ fabric = "*"
 [packages]
 django = "==3.0.*"
 python-dotenv = "*"
-sentry-sdk = "==0.13.5"
+sentry-sdk = "*"
 psycopg2-binary = "*"
 django-enum-choices = "*"
 pillow = "*"
