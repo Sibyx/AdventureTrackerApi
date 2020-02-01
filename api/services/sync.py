@@ -4,10 +4,6 @@ from uuid import UUID
 
 from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import Point
-from django.utils.translation import gettext as _
-
-from api import http_status
-from api.errors import ApiException
 from core.models import Record, Photo, Adventure
 
 User = get_user_model()
@@ -25,10 +21,8 @@ class SyncService(object):
     def sync_adventure(self, adventure_data: dict):
         try:
             adventure = Adventure.objects_all.get(pk=adventure_data['id'])
-
             if self._user not in adventure.users.all():
-                raise ApiException(_("You are not member of this adventure!"),
-                                   status_code=http_status.HTTP_403_FORBIDDEN)
+                return
         except Adventure.DoesNotExist:
             adventure = Adventure(id=adventure_data['id'])
 

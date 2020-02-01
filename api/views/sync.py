@@ -21,7 +21,7 @@ def sync(request):
     form = SyncForm.create_from_request(request)
 
     if not form.is_valid():
-        raise ValidationException(form)
+        raise ValidationException(request, form)
 
     sync_service = SyncService(request.user, form.cleaned_data['last_sync'])
 
@@ -60,4 +60,4 @@ def sync(request):
 
         response['adventures'].append(item)
 
-    return SingleResponse(response, status=http_status.HTTP_200_OK)
+    return SingleResponse(request, response, status=http_status.HTTP_200_OK)

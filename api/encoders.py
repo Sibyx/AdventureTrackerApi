@@ -28,19 +28,24 @@ class ApiJSONEncoder(DjangoJSONEncoder):
 
 
 class MessagePackEncoder(object):
-    """
-    TODO: MessagePack according  accept-type
-    https://github.com/juanriaza/django-rest-framework-msgpack/blob/master/rest_framework_msgpack/renderers.py
-    """
-
     def encode(self, obj):
         if isinstance(obj, datetime.datetime):
-            return {'__class__': 'datetime', 'as_str': obj.isoformat()}
+            return obj.isoformat()
         elif isinstance(obj, datetime.date):
-            return {'__class__': 'date', 'as_str': obj.isoformat()}
+            return obj.isoformat()
         elif isinstance(obj, datetime.time):
-            return {'__class__': 'time', 'as_str': obj.isoformat()}
+            return obj.isoformat()
         elif isinstance(obj, decimal.Decimal):
-            return {'__class__': 'decimal', 'as_str': str(obj)}
+            return str(obj)
+        elif isinstance(obj, UUID):
+            return str(obj)
+        elif isinstance(obj, BaseModel):
+            return obj.summary
+        elif isinstance(obj, Page):
+            return obj.object_list
+        elif isinstance(obj, Enum):
+            return str(obj.value)
+        elif isinstance(obj, BaseQuerySet):
+            return list(obj)
         else:
             return obj

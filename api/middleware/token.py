@@ -1,7 +1,6 @@
 from django.contrib import auth
 from django.contrib.auth.models import AnonymousUser
 from django.utils.translation import gettext as _
-from sentry_sdk import configure_scope
 
 from api import http_status
 from api.errors import ApiException
@@ -20,7 +19,7 @@ class TokenMiddleware(object):
 
         if len(auth_header) != 2:
             return ErrorResponse.create_from_exception(
-                ApiException(_("Improperly formatted token"), status_code=http_status.HTTP_400_BAD_REQUEST)
+                ApiException(request, _("Improperly formatted token"), status_code=http_status.HTTP_400_BAD_REQUEST)
             )
 
         user = auth.authenticate(token=auth_header[1])

@@ -26,18 +26,18 @@ class TokenManagement(View):
             user = User.objects.get(**conditions)
         except User.DoesNotExist as e:
             raise ApiException(
-                _("Invalid credentials!"), status_code=http_status.HTTP_401_UNAUTHORIZED, previous=e
+                request, _("Invalid credentials!"), status_code=http_status.HTTP_401_UNAUTHORIZED, previous=e
             )
 
         if not user.check_password(form.cleaned_data['password']):
-            raise ApiException(_("Invalid credentials!"), status_code=http_status.HTTP_401_UNAUTHORIZED)
+            raise ApiException(request, _("Invalid credentials!"), status_code=http_status.HTTP_401_UNAUTHORIZED)
 
         if not user.is_active or not user.has_perm('add_token'):
-            raise ApiException(_("Permission denied!"), status_code=http_status.HTTP_403_FORBIDDEN)
+            raise ApiException(request, _("Permission denied!"), status_code=http_status.HTTP_403_FORBIDDEN)
 
         token = Token.objects.create(
             user=user,
             expires_at=form.cleaned_data['expires_at']
         )
 
-        return SingleResponse(data=token.summary, status=http_status.HTTP_201_CREATED)
+        return SingleResponse(request, data=token.summary, status=http_status.HTTP_201_CREATED)

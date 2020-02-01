@@ -26,10 +26,10 @@ class PhotoDetailView(View):
         try:
             photo = Photo.objects.get(pk=photo_id)
         except Photo.DoesNotExist:
-            raise ApiException(_("Photo not found!"), status_code=http_status.HTTP_404_NOT_FOUND)
+            raise ApiException(request, _("Photo not found!"), status_code=http_status.HTTP_404_NOT_FOUND)
 
         if request.user not in photo.record.adventure.users.all():
-            raise ApiException(_("Access forbidden!"), status_code=http_status.HTTP_403_FORBIDDEN)
+            raise ApiException(request, _("Access forbidden!"), status_code=http_status.HTTP_403_FORBIDDEN)
 
         stream = io.BytesIO(request.body)
         pillow_image = Image.open(stream)
@@ -38,7 +38,9 @@ class PhotoDetailView(View):
         photo.mime = Image.MIME[pillow_image.format]
 
         if photo.mime not in settings.ALLOWED_PHOTO_MIMES or request.headers.get('Content-Type') != photo.mime:
-            raise ApiException(_('Invalid content type detected!'), status_code=http_status.HTTP_400_BAD_REQUEST)
+            raise ApiException(
+                request, _('Invalid content type detected!'), status_code=http_status.HTTP_400_BAD_REQUEST
+            )
 
         filename = f"{photo.id}.{pillow_image.format.lower()}"
         uploaded_file = InMemoryUploadedFile(
@@ -57,17 +59,17 @@ class PhotoDetailView(View):
 
         photo.save()
 
-        return SingleResponse(photo)
+        return SingleResponse(request, photo)
 
     @method_decorator(token_required)
     def get(self, request, photo_id):
         try:
             photo = Photo.objects.get(pk=photo_id)
         except Photo.DoesNotExist:
-            raise ApiException(_("Photo not found!"), status_code=http_status.HTTP_404_NOT_FOUND)
+            raise ApiException(request, _("Photo not found!"), status_code=http_status.HTTP_404_NOT_FOUND)
 
         if request.user not in photo.record.adventure.users.all():
-            raise ApiException(_("Access forbidden!"), status_code=http_status.HTTP_403_FORBIDDEN)
+            raise ApiException(request, _("Access forbidden!"), status_code=http_status.HTTP_403_FORBIDDEN)
 
         response = HttpResponse(content_type=photo.mime)
         response['Content-Disposition'] = f'attachment; filename={os.path.basename(photo.path.file.name)}'

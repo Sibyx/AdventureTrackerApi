@@ -2,12 +2,14 @@ import json
 from dataclasses import dataclass
 from enum import Enum
 
+import msgpack
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.http import HttpResponse
+from django.utils.translation import gettext as _
 
 from api import http_status
-from api.encoders import ApiJSONEncoder
+from api.encoders import ApiJSONEncoder, MessagePackEncoder
 from api.errors import ValidationException, ApiException
 
 
@@ -40,56 +42,76 @@ class Ordering:
         return self.__str__()
 
 
-class SingleResponse(HttpResponse):
-    def __init__(self, data: dict = None, **kwargs):
+class GeneralResponse(HttpResponse):
+    def __init__(self, request, data: dict = None, **kwargs):
+        params = {}
+        if data is not None:
+            content_type = request.headers.get('accept', 'application/json')
+            if content_type == 'application/x-msgpack':
+                params['content_type'] = 'application/x-msgpack'
+                params['content'] = msgpack.packb(data, use_bin_type=True, default=MessagePackEncoder().encode)
+            elif content_type in ['*/*', 'application/json']:
+                params['content_type'] = 'application/json'
+                params['content'] = json.dumps(data, cls=ApiJSONEncoder)
+            else:
+                params['content_type'] = 'application/json'
+                params['status'] = http_status.HTTP_406_NOT_ACCEPTABLE
+                params['content'] = json.dumps({
+                    'message': _("Not Acceptable"),
+                    'metadata': {
+                        'available': [
+                            'application/json',
+                            'application/x-msgpack'
+                        ],
+                        'asked': content_type
+                    }
+                })
+
+        kwargs.update(params)
+        super().__init__(**kwargs)
+
+
+class SingleResponse(GeneralResponse):
+    def __init__(self, request, data: dict = None, **kwargs):
         if data is None:
             kwargs['status'] = http_status.HTTP_204_NO_CONTENT
         else:
             data = {
                 'response': data,
             }
-            kwargs.setdefault('content_type', 'application/json')
-            data = json.dumps(data, cls=ApiJSONEncoder)
-
-        super().__init__(content=data, **kwargs)
+        super().__init__(request=request, data=data, **kwargs)
 
 
-class ErrorResponse(HttpResponse):
-    def __init__(self, payload: dict, **kwargs):
+class ErrorResponse(GeneralResponse):
+    def __init__(self, request, payload: dict, **kwargs):
         data = {
             'error': payload,
             'metadata': {}
         }
 
-        kwargs.setdefault('content_type', 'application/json')
-        data = json.dumps(data, cls=ApiJSONEncoder)
-
-        super().__init__(content=data, **kwargs)
+        super().__init__(request=request, data=data, **kwargs)
 
     @staticmethod
     def create_from_exception(e: ApiException) -> 'ErrorResponse':
-        return ErrorResponse(e.payload, status=e.status_code)
+        return ErrorResponse(e.request, e.payload, status=e.status_code)
 
 
-class ValidationResponse(HttpResponse):
-    def __init__(self, payload: dict, **kwargs):
+class ValidationResponse(GeneralResponse):
+    def __init__(self, request, payload: dict, **kwargs):
         data = {
             'errors': payload
         }
 
-        kwargs.setdefault('content_type', 'application/json')
-        data = json.dumps(data, cls=ApiJSONEncoder)
-
-        super().__init__(content=data, **kwargs)
+        super().__init__(request, data, status=http_status.HTTP_422_UNPROCESSABLE_ENTITY, **kwargs)
 
     @staticmethod
     def create_from_exception(e: ValidationException) -> 'ValidationResponse':
-        return ValidationResponse(e.payload, status=http_status.HTTP_422_UNPROCESSABLE_ENTITY)
+        return ValidationResponse(e.request, e.payload, status=http_status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
-class PaginationResponse(HttpResponse):
+class PaginationResponse(GeneralResponse):
     def __init__(
-        self, qs, page: int, limit: int = settings.PAGINATION['PER_PAGE'], ordering: Ordering = None, **kwargs
+        self, request, qs, page: int, limit: int = settings.PAGINATION['PER_PAGE'], ordering: Ordering = None, **kwargs
     ):
         kwargs.setdefault('content_type', 'application/json')
 
@@ -110,7 +132,12 @@ class PaginationResponse(HttpResponse):
                 'total': paginator.count
             }
         }
+        super().__init__(request, data, **kwargs)
 
-        data = json.dumps(data, cls=ApiJSONEncoder)
 
-        super().__init__(content=data, **kwargs)
+__all__ = [
+    "SingleResponse",
+    "ErrorResponse",
+    "PaginationResponse",
+    "ValidationResponse"
+]

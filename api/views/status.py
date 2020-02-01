@@ -7,7 +7,7 @@ from api.response import SingleResponse
 
 @require_http_methods(['GET'])
 def status(request):
-    return SingleResponse({
+    return SingleResponse(request, {
         'version': '1.0.0',
         'timestamp': timezone.now()
     }, status=http_status.HTTP_200_OK)

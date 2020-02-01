@@ -14,7 +14,7 @@ class RecordTypeManagement(View):
     def post(self, request):
         record_type = RecordType()
 
-        return SingleResponse(record_type.summary, status=http_status.HTTP_201_CREATED)
+        return SingleResponse(request, record_type, status=http_status.HTTP_201_CREATED)
 
     @method_decorator(token_required)
     def get(self, request):
@@ -38,4 +38,4 @@ class RecordTypeManagement(View):
 
         qs = RecordType.objects.filter(**parameters)
 
-        return PaginationResponse(qs, page, limit, ordering=ordering)
+        return PaginationResponse(request, qs, page, limit, ordering=ordering)
