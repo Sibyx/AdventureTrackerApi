@@ -11,4 +11,4 @@ class CreateAdventureForm(Form):
     description = fields.CharField(required=False)
     started_at = fields.DateTimeField()
     finished_at = fields.DateTimeField(required=False)
-    members = FieldList(field=fields.UUIDField())
+    members = FieldList(field=fields.UUIDField(), required=False)

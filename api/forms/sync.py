@@ -15,7 +15,7 @@ class SyncRecordForm(CreateRecordForm):
 
 class SyncAdventureForm(CreateAdventureForm):
     id = fields.UUIDField()
-    records = FormFieldList(form=SyncRecordForm)
+    records = FormFieldList(form=SyncRecordForm, required=False)
     updated_at = fields.DateTimeField()
     deleted_at = fields.DateTimeField(required=False)
 

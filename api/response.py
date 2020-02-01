@@ -72,7 +72,7 @@ class GeneralResponse(HttpResponse):
 
 
 class SingleResponse(GeneralResponse):
-    def __init__(self, request, data: dict = None, **kwargs):
+    def __init__(self, request, data=None, **kwargs):
         if data is None:
             kwargs['status'] = http_status.HTTP_204_NO_CONTENT
         else:

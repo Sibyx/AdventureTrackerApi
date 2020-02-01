@@ -6,10 +6,7 @@ from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
 from django.utils.translation import get_language
 
-from api.errors import ApiException
 from core.models.base import BaseModel
-
-from django.utils.translation import gettext as _
 
 
 @dataclass
@@ -48,11 +45,7 @@ class RecordType(BaseModel):
     def summary(self) -> dict:
         # Check if language code exists in model localizations
         language_code = get_language() if get_language() in self.localizations else settings.LANGUAGE_CODE
-
-        try:
-            localization = RecordTypeLocalization.create_from_dict(self.localizations[language_code])
-        except KeyError as e:
-            raise ApiException(_("Invalid RecordType localization values"), previous=e)
+        localization = RecordTypeLocalization.create_from_dict(self.localizations[language_code])
 
         return {
             'id': self.id,
