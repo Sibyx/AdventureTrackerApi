@@ -1,5 +1,7 @@
 # AdventureTracker API
 
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=AdventureTracker%20API&uri=https%3A%2F%2Fgithub.com%2FSibyx%2FAdventureTrackerApi%2Fblob%2Fmaster%2Fdocs%2Fadventure_tracker_insomnia.json)
+
 AdventureTracker is an open-source application for creating nice & shiny travel notes using simple mobile application.
 Diaries are set of travel records coordinates, description, point-type and photos.
 
