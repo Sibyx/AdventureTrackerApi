@@ -1,6 +1,5 @@
 from django.forms import fields
-from django_request_formatter.fields import FormFieldList, FormField
-from django_request_formatter.forms import Form
+from django_api_forms import FormFieldList, FormField, Form
 
 from api.forms.adventures import CreateAdventureForm
 from api.forms.records import CreateRecordForm

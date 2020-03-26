@@ -1,6 +1,5 @@
 from django.forms import fields
-from django_request_formatter.fields import EnumField, FieldList
-from django_request_formatter.forms import Form
+from django_api_forms import EnumField, FieldList, Form
 
 from core.models.adventure import AdventureStatus
 

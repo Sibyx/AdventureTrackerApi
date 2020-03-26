@@ -2,7 +2,7 @@ import traceback
 
 import sentry_sdk
 from django.conf import settings
-from django_request_formatter.forms import Form
+from django_api_forms import Form
 
 from api import http_status
 

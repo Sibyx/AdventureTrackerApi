@@ -1,6 +1,5 @@
 from django.forms import fields
-from django_request_formatter.fields import FormField, FieldList
-from django_request_formatter.forms import Form
+from django_api_forms import FormField, FieldList, Form
 
 
 class PointForm(Form):
