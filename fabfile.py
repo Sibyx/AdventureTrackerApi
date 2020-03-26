@@ -55,6 +55,7 @@ def check(ctx, destination):
 def setup(ctx, destination):
     config = _parse_config(destination)
     ctx = _get_connection(ctx, config['ssh'])
+    shared_env = f"{config['deploy_to']}/shared/env"
 
     ctx.run(f"mkdir {config['deploy_to']}")
 
@@ -66,6 +67,9 @@ def setup(ctx, destination):
 
         # Create Python virtualenv
         ctx.run(f"{config['python']} -m venv shared/env")
+
+        # Install deployment tools
+        ctx.run(f"{shared_env}/bin/pip install poetry")
 
 
 @task
@@ -90,8 +94,7 @@ def deploy(ctx, destination):
 
         # Install dependencies
         ctx.run(f"{shared}/env/bin/pip install --upgrade pip")
-        ctx.run(f"{shared}/env/bin/pip install pipfile-requirements")
-        ctx.run(f"{shared}/env/bin/pipfile2req Pipfile.lock > requirements.txt")
+        ctx.run(f"{shared}/env/bin/poetry export -f requirements.txt > requirements.txt")
         ctx.run(f"{shared}/env/bin/pip install -r requirements.txt")
 
         # Create .env file

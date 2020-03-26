@@ -11,3 +11,4 @@
 !/media/.gitkeep
 .deploy
 !.deploy/example.json
+/venv/

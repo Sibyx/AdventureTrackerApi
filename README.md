@@ -25,8 +25,8 @@ directory in project root.
 
 ## Installation
 
-We use [pipenv](https://github.com/pypa/pipenv) to manage virtual environments & dependencies, so installation is
-simply done by typing `pipenv install` in cloned repository.
+We use [poetry](https://python-poetry.org/) to manage virtual environments & dependencies, so installation is
+simply done by typing `poetry install` inside of virtual environment of cloned repository.
 
 Minimum system requirements:
 
@@ -53,7 +53,7 @@ Please always update the existing seed (do not replace primary keys).
 - [Django](https://www.djangoproject.com/): Back-end framework
 - [python-dotenv](https://github.com/theskumar/python-dotenv): Configuration using .env files
 - [django-enum-choices](https://github.com/HackSoftware/django-enum-choices): Enum support for Django ORM
-- [django_request_formatter](https://github.com/Sibyx/django_request_formatter): Request validation
+- [django-api-forms](https://github.com/Sibyx/django_api_forms): Request validation
 
 ---
 With ❤️ Hobbits (c) 2019
